@@ -33,5 +33,24 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Name)
             .HasMaxLength(200);
+
+        // App Store Connect: un user = o setare (UserId unic)
+        modelBuilder.Entity<AppStoreConnectCredential>()
+            .HasOne(c => c.User)
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<AppStoreConnectCredential>()
+            .HasIndex(c => c.UserId)
+            .IsUnique();
+        modelBuilder.Entity<AppStoreConnectCredential>()
+            .Property(c => c.IssuerId)
+            .HasMaxLength(100);
+        modelBuilder.Entity<AppStoreConnectCredential>()
+            .Property(c => c.KeyId)
+            .HasMaxLength(100);
+        modelBuilder.Entity<AppStoreConnectCredential>()
+            .Property(c => c.PrivateKey)
+            .HasMaxLength(2000);
     }
 }
