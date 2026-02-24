@@ -1,0 +1,26 @@
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/bin/Debug/net9.0/Groz Backend.staticwebassets.endpoints.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/bin/Debug/net9.0/Groz Backend
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/bin/Debug/net9.0/Groz Backend.deps.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/bin/Debug/net9.0/Groz Backend.runtimeconfig.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/bin/Debug/net9.0/Groz Backend.dll
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/bin/Debug/net9.0/Groz Backend.pdb
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/rpswa.dswa.cache.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.AssemblyInfoInputs.cache
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.AssemblyInfo.cs
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.csproj.CoreCompileInputs.cache
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.MvcApplicationPartsAssemblyInfo.cache
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.sourcelink.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/rjimswa.dswa.cache.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/rjsmrazor.dswa.cache.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/scopedcss/bundle/Groz Backend.styles.css
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/staticwebassets.build.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/staticwebassets.build.json.cache
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/staticwebassets.development.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/staticwebassets.build.endpoints.json
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.dll
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/refint/Groz Backend.dll
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.pdb
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/Groz Backend.genruntimeconfig.cache
+/Users/mihaww/Desktop/Groz Backend/Groz Backend/obj/Debug/net9.0/ref/Groz Backend.dll

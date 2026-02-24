@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "DoP6tlwjxfA=",
+  "dgSpecHash": "qYKfdDqvCGU=",
   "success": true,
   "projectFilePath": "/Users/mihaww/Desktop/Groz Backend/Groz Backend/Groz Backend.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/mihaww/.nuget/packages/microsoft.netcore.app.ref/8.0.23/microsoft.netcore.app.ref.8.0.23.nupkg.sha512",
+    "/Users/mihaww/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.23/microsoft.aspnetcore.app.ref.8.0.23.nupkg.sha512",
+    "/Users/mihaww/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.23/microsoft.netcore.app.host.osx-arm64.8.0.23.nupkg.sha512"
+  ],
   "logs": []
 }
