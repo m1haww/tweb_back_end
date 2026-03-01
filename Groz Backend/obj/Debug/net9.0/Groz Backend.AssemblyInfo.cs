@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Groz Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac089304dd7bf33da87a6406ab591ea63448345a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d186313f5e049fbd937af654d148cb2a154d7139")]
 [assembly: System.Reflection.AssemblyProductAttribute("Groz Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Groz Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

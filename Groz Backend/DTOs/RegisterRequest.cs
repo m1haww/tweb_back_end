@@ -7,12 +7,12 @@ namespace Groz_Backend.DTOs;
 /// </summary>
 public class RegisterRequest
 {
-    [Required(ErrorMessage = "Email-ul este obligatoriu")]
+    [Required(ErrorMessage = "Email is required.")]
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Parola este obligatorie")]
-    [MinLength(6, ErrorMessage = "Parola trebuie să aibă minim 6 caractere")]
+    [Required(ErrorMessage = "Password is required.")]
+    [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
     public string Password { get; set; } = string.Empty;
 
     public string? Name { get; set; }

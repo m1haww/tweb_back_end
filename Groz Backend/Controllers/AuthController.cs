@@ -29,11 +29,11 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct)
     {
         if (request == null)
-            return BadRequest("Date invalide.");
+            return BadRequest(new { message = "Invalid data." });
 
         var response = await _authService.Register(request, ct);
         if (response == null)
-            return BadRequest("Există deja un cont cu acest email.");
+            return BadRequest(new { message = "An account with this email already exists." });
 
         return Ok(response);
     }
@@ -46,11 +46,11 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken ct)
     {
         if (request == null)
-            return BadRequest("Date invalide.");
+            return BadRequest(new { message = "Invalid data." });
 
         var response = await _authService.Login(request, ct);
         if (response == null)
-            return Unauthorized("Email sau parolă incorectă.");
+            return Unauthorized(new { message = "Invalid email or password." });
 
         return Ok(response);
     }
@@ -68,7 +68,7 @@ public class AuthController : ControllerBase
 
         var user = await _authService.GetUserById(userId, ct);
         if (user == null)
-            return NotFound("Utilizator negăsit.");
+            return NotFound(new { message = "User not found." });
 
         return Ok(new UserDto
         {

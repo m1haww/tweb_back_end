@@ -17,12 +17,13 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<AuthService>();
 
 // CORS - permite request-uri de la frontend (React, Vite etc.)
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:3000" };
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:3000", "http://localhost:5173" };
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(allowedOrigins)
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -46,7 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// Ordine importantă: CORS → Authentication → Authorization
+// CORS trebuie primul, ca preflight (OPTIONS) să primească header-e
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

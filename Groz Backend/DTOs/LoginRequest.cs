@@ -7,10 +7,10 @@ namespace Groz_Backend.DTOs;
 /// </summary>
 public class LoginRequest
 {
-    [Required(ErrorMessage = "Email-ul este obligatoriu")]
+    [Required(ErrorMessage = "Email is required.")]
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Parola este obligatorie")]
+    [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; } = string.Empty;
 }
