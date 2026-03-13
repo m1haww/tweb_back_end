@@ -40,7 +40,9 @@ public class KeywordService : IKeywordService
     public async Task<KeywordReportResponseDto?> GetKeywordReportAsync(long campaignId, Guid userId, KeywordReportRequestDto request, CancellationToken ct = default)
     {
         var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns/{campaignId}/keywords", request, ct);
-        if (response == null || !response.IsSuccessStatusCode)
+        Console.WriteLine($"Response from keywords report: ${await response.Content.ReadAsStringAsync(ct)}");
+        
+        if (!response.IsSuccessStatusCode)
             return null;
 
         var json = await response.Content.ReadAsStringAsync(ct);
