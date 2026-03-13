@@ -2,15 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy solution and project files for restore
-COPY "Groz Backend.sln" .
+# Copy solution and project files for restore (JSON form avoids space-in-filename parsing issues)
+COPY ["Groz Backend.sln", "."]
 COPY global.json .
 COPY Api/Api.csproj Api/
 COPY BusinessLogic/BusinessLogic.csproj BusinessLogic/
 COPY Domain/Domain.csproj Domain/
 
 # Restore entire solution so all projects and refs are resolved
-RUN dotnet restore "Groz Backend.sln"
+RUN ["dotnet", "restore", "Groz Backend.sln"]
 
 # Copy remaining source and publish
 COPY . .
