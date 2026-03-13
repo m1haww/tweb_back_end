@@ -2,14 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy project files (solution not required for restore/publish of Api.csproj)
+# Copy solution and project files for restore
+COPY "Groz Backend.sln" .
 COPY global.json .
 COPY Api/Api.csproj Api/
 COPY BusinessLogic/BusinessLogic.csproj BusinessLogic/
 COPY Domain/Domain.csproj Domain/
 
-# Restore
-RUN dotnet restore Api/Api.csproj
+# Restore entire solution so all projects and refs are resolved
+RUN dotnet restore "Groz Backend.sln"
 
 # Copy remaining source and publish
 COPY . .
