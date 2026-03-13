@@ -26,7 +26,7 @@ public class ReportsController : ControllerBase
         return Guid.TryParse(claim, out var id) ? id : null;
     }
 
-    [HttpGet("keywords/{campaignId:long}")]
+    [HttpPost("keywords/{campaignId:long}")]
     public async Task<IActionResult> GetKeywordReport(long campaignId, [FromBody] KeywordReportRequestDto request, CancellationToken ct)
     {
         var userId = GetCurrentUserId();
