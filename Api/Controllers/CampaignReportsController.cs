@@ -26,7 +26,7 @@ public class CampaignReportsController : ControllerBase
         return Guid.TryParse(claim, out var id) ? id : null;
     }
 
-    [HttpPost("{campaignId:long}/reports/keywords")]
+    [HttpGet("{campaignId:long}/reports/keywords")]
     public async Task<IActionResult> GetKeywordReport(long campaignId, [FromBody] KeywordReportRequestDto request, CancellationToken ct)
     {
         var userId = GetCurrentUserId();
@@ -39,7 +39,7 @@ public class CampaignReportsController : ControllerBase
         return Ok(report);
     }
 
-    [HttpPost("get-all")]
+    [HttpGet("get-all")]
     public async Task<IActionResult> GetCampaignReportList([FromBody] CampaignReportRequestDto request, CancellationToken ct = default)
     {
         var userId = GetCurrentUserId();
