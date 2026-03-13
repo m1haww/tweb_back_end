@@ -78,33 +78,12 @@ public class CampaignReportResponseDto
 {
     [JsonPropertyName("row")]
     public List<CampaignReportRowDto>? Row { get; set; }
-
-    [JsonPropertyName("grandTotals")]
-    public CampaignReportGrandTotalsDto? GrandTotals { get; set; }
 }
 
 public class CampaignReportRowDto
 {
-    [JsonPropertyName("granularity")]
-    public List<string>? Granularity { get; set; }
-
     [JsonPropertyName("metadata")]
     public CampaignReportMetadataDto? Metadata { get; set; }
-
-    [JsonPropertyName("total")]
-    public KeywordReportTotalDto? Total { get; set; }
-
-    [JsonPropertyName("other")]
-    public bool Other { get; set; }
-}
-
-public class CampaignReportGrandTotalsDto
-{
-    [JsonPropertyName("other")]
-    public bool Other { get; set; }
-
-    [JsonPropertyName("total")]
-    public KeywordReportTotalDto? Total { get; set; }
 }
 
 public class CampaignReportMetadataDto
@@ -164,7 +143,7 @@ public class CampaignReportMetadataDto
     public long? OrgId { get; set; }
 
     [JsonPropertyName("countryOrRegionServingStateReasons")]
-    public object? CountryOrRegionServingStateReasons { get; set; }
+    public Dictionary<string, object>? CountryOrRegionServingStateReasons { get; set; }
 
     [JsonPropertyName("countryOrRegion")]
     public string? CountryOrRegion { get; set; }
