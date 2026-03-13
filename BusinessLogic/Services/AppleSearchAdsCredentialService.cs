@@ -161,6 +161,8 @@ public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
         var json = await response.Content.ReadAsStringAsync(ct);
         if (!response.IsSuccessStatusCode)
             return null;
+        
+        Console.WriteLine($"Acl response: {json}");
 
         return JsonSerializer.Deserialize<AppleSearchAdsAclResponseDto>(json);
     }
