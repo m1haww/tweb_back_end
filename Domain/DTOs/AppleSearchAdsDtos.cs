@@ -40,5 +40,5 @@ public class AppleSearchAdsAclDataDto
 public class AppleSearchAdsAclResponseDto
 {
     [JsonPropertyName("data")]
-    public AppleSearchAdsAclDataDto? Data { get; set; }
+    public List<AppleSearchAdsAclDataDto>? Data { get; set; }
 }

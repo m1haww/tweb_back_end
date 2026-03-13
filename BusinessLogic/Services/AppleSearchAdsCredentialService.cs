@@ -98,7 +98,7 @@ public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
         if (cred.OrgId == null)
         {
             var data = await GetAclsAsync(cred, ct);
-            cred.OrgId = data?.Data?.OrgId;
+            cred.OrgId = data?.Data?.FirstOrDefault()?.OrgId;
             await _dbContext.SaveChangesAsync(ct);
         }
 
