@@ -13,7 +13,7 @@ public class AppleSearchAdsCredential
     public string Alg { get; set; } = "ES256";
     public string? ClientSecretJwt { get; set; }
     public DateTime? ClientSecretJwtExpiresAt { get; set; }
-    public int? OrgId { get; set; }
+    public long? OrgId { get; set; }
     public string? AccessToken { get; set; }
     public DateTime? AccessTokenExpiresAt { get; set; }
 

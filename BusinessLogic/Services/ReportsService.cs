@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Text.Json;
 using BusinessLogic.Interfaces;
 using Domain.DTOs;
@@ -7,41 +6,21 @@ namespace BusinessLogic.Services;
 
 public class ReportsService : IReportsService
 {
-    private const string BaseUrl = "https://api.searchads.apple.com/api/v5";
-    private readonly IAppleSearchAdsCredentialService _credentialService;
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IAppleSearchAdsApiClient _apiClient;
 
-    public ReportsService(IAppleSearchAdsCredentialService credentialService, IHttpClientFactory httpClientFactory)
+    public ReportsService(IAppleSearchAdsApiClient apiClient)
     {
-        _credentialService = credentialService;
-        _httpClientFactory = httpClientFactory;
-    }
-    
-    private async Task<string?> GetAccessTokenAsync(Guid userId, CancellationToken ct)
-    {
-        var result = await _credentialService.GetOrCreateAccessToken(userId, ct);
-        return result?.AccessToken;
+        _apiClient = apiClient;
     }
 
-    private HttpClient CreateClient(string bearerToken)
-    {
-        var client = _httpClientFactory.CreateClient();
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
-        return client;
-    }
-    
     public async Task<CampaignReportResponseDto?> GetCampaignReportAsync(Guid userId, CampaignReportRequestDto request, CancellationToken ct = default)
     {
-        var token = await GetAccessTokenAsync(userId, ct);
-        if (token == null) return null;
-
-        using var client = CreateClient(token!);
-        var response = await client.PostAsJsonAsync($"{BaseUrl}/reports/campaigns", request, ct);
-        var body = await response.Content.ReadAsStringAsync(ct);
-        Console.WriteLine("Response body: " + body);
-        if (!response.IsSuccessStatusCode) return null;
+        var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns", request, ct);
+        if (response == null || !response.IsSuccessStatusCode)
+            return null;
 
         var json = await response.Content.ReadAsStringAsync(ct);
+        response.Dispose();
         return JsonSerializer.Deserialize<CampaignReportResponseDto>(json);
     }
 }

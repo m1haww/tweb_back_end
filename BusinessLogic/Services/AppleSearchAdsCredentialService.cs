@@ -12,6 +12,7 @@ namespace BusinessLogic.Services;
 public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
 {
     private const string AppleTokenUrl = "https://appleid.apple.com/auth/oauth2/token";
+    private const string SearchAdsApiBaseUrl = "https://api.searchads.apple.com/api/v5";
     private const string AppleAudience = "https://appleid.apple.com";
     private const string SearchAdsScope = "searchadsorg";
     private static readonly TimeSpan TokenRefreshBuffer = TimeSpan.FromMinutes(10);
@@ -94,12 +95,20 @@ public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
         if (cred == null)
             return null;
 
+        if (cred.OrgId == null)
+        {
+            var data = await GetAclsAsync(cred, ct);
+            cred.OrgId = data?.Data?.OrgId;
+            await _dbContext.SaveChangesAsync(ct);
+        }
+
         var now = DateTime.UtcNow;
         if (cred.AccessToken != null && cred.AccessTokenExpiresAt.HasValue &&
             cred.AccessTokenExpiresAt.Value > now + TokenRefreshBuffer)
         {
             return new AppleSearchAdsAccessTokenResult
             {
+                OrgId = cred.OrgId,
                 AccessToken = cred.AccessToken,
                 ExpiresAt = cred.AccessTokenExpiresAt.Value
             };
@@ -123,6 +132,7 @@ public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
 
         cred.AccessToken = tokenResult.AccessToken;
         cred.AccessTokenExpiresAt = tokenResult.ExpiresAt;
+        tokenResult.OrgId = cred.OrgId;
         await _dbContext.SaveChangesAsync(ct);
 
         return tokenResult;
@@ -137,6 +147,22 @@ public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
         _dbContext.AppleSearchAdsCredentials.Remove(cred);
         await _dbContext.SaveChangesAsync(ct);
         return true;
+    }
+
+    public async Task<AppleSearchAdsAclResponseDto?> GetAclsAsync(AppleSearchAdsCredential cred, CancellationToken ct = default)
+    {
+        if (cred.AccessToken == null)
+            return null;
+
+        using var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {cred.AccessToken}");
+
+        var response = await client.GetAsync($"{SearchAdsApiBaseUrl}/acls", ct);
+        var json = await response.Content.ReadAsStringAsync(ct);
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        return JsonSerializer.Deserialize<AppleSearchAdsAclResponseDto>(json);
     }
 
     private static string? CreateClientSecretJwt(AppleSearchAdsCredential cred)
@@ -245,7 +271,7 @@ public class AppleSearchAdsCredentialService : IAppleSearchAdsCredentialService
         {
             AccessToken = tokenResponse.AccessToken,
             TokenType = tokenResponse.TokenType ?? "Bearer",
-            ExpiresAt = expiresAt
+            ExpiresAt = expiresAt,
         };
     }
 }

@@ -111,8 +111,8 @@ namespace Groz_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("OrgId")
-                        .HasColumnType("integer");
+                    b.Property<long?>("OrgId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("PrivateKey")
                         .IsRequired()
