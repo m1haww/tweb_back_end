@@ -11,7 +11,7 @@ public class ReportsService : IReportsService
     private readonly IAppleSearchAdsCredentialService _credentialService;
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public ReportsService(in IAppleSearchAdsCredentialService credentialService, IHttpClientFactory httpClientFactory)
+    public ReportsService(IAppleSearchAdsCredentialService credentialService, IHttpClientFactory httpClientFactory)
     {
         _credentialService = credentialService;
         _httpClientFactory = httpClientFactory;
