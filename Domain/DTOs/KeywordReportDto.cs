@@ -71,13 +71,23 @@ public class KeywordReportPaginationDto
     public int Limit { get; set; }
 }
 
+/// <summary>Root keyword report API response: data.reportingDataResponse.row.</summary>
 public class KeywordReportResponseDto
+{
+    [JsonPropertyName("data")]
+    public KeywordReportDataDto? Data { get; set; }
+}
+
+public class KeywordReportDataDto
+{
+    [JsonPropertyName("reportingDataResponse")]
+    public KeywordReportingDataResponseDto? ReportingDataResponse { get; set; }
+}
+
+public class KeywordReportingDataResponseDto
 {
     [JsonPropertyName("row")]
     public List<KeywordReportRowDto>? Row { get; set; }
-
-    [JsonPropertyName("grandTotals")]
-    public KeywordReportGrandTotalsDto? GrandTotals { get; set; }
 }
 
 public class KeywordReportRowDto
@@ -85,23 +95,14 @@ public class KeywordReportRowDto
     [JsonPropertyName("other")]
     public bool Other { get; set; }
 
-    [JsonPropertyName("total")]
-    public KeywordReportTotalDto? Total { get; set; }
-
     [JsonPropertyName("metadata")]
     public KeywordReportMetadataDto? Metadata { get; set; }
 
-    [JsonPropertyName("insights")]
-    public KeywordReportInsightsDto? Insights { get; set; }
-}
-
-public class KeywordReportGrandTotalsDto
-{
-    [JsonPropertyName("other")]
-    public bool Other { get; set; }
-
     [JsonPropertyName("total")]
     public KeywordReportTotalDto? Total { get; set; }
+
+    [JsonPropertyName("insights")]
+    public KeywordReportInsightsDto? Insights { get; set; }
 }
 
 public class KeywordReportTotalDto
@@ -148,8 +149,8 @@ public class KeywordReportTotalDto
     [JsonPropertyName("viewNewDownloads")]
     public int? ViewNewDownloads { get; set; }
 
-    [JsonPropertyName("viewReDownloads")]
-    public int? ViewReDownloads { get; set; }
+    [JsonPropertyName("viewRedownloads")]
+    public int? ViewRedownloads { get; set; }
 
     [JsonPropertyName("tapPreOrdersPlaced")]
     public int? TapPreOrdersPlaced { get; set; }
@@ -178,6 +179,15 @@ public class KeywordReportTotalDto
 
 public class KeywordReportMetadataDto
 {
+    [JsonPropertyName("campaignId")]
+    public long? CampaignId { get; set; }
+
+    [JsonPropertyName("orgId")]
+    public long? OrgId { get; set; }
+
+    [JsonPropertyName("deleted")]
+    public bool Deleted { get; set; }
+
     [JsonPropertyName("keywordId")]
     public long? KeywordId { get; set; }
 
@@ -192,9 +202,6 @@ public class KeywordReportMetadataDto
 
     [JsonPropertyName("bidAmount")]
     public MoneyDto? BidAmount { get; set; }
-
-    [JsonPropertyName("deleted")]
-    public bool Deleted { get; set; }
 
     [JsonPropertyName("keywordDisplayStatus")]
     public string? KeywordDisplayStatus { get; set; }
