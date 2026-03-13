@@ -44,6 +44,40 @@ namespace Groz_Backend.Migrations
                     b.ToTable("Apps");
                 });
 
+            modelBuilder.Entity("Domain.Entities.App.AppUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<long?>("AdGroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AppId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("CampaignId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("InstallDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("KeywordId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("TotalRevenue")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppUsers");
+                });
+
             modelBuilder.Entity("Domain.Entities.Credentials.AppleSearchAdsCredential", b =>
                 {
                     b.Property<Guid>("Id")
