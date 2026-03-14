@@ -40,13 +40,54 @@ public class KeywordService : IKeywordService
     public async Task<KeywordReportResponseDto?> GetKeywordReportAsync(long campaignId, Guid userId, KeywordReportRequestDto request, CancellationToken ct = default)
     {
         var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns/{campaignId}/keywords", request, ct);
-        Console.WriteLine($"Response from keywords report: ${await response.Content.ReadAsStringAsync(ct)}");
-        
-        if (!response.IsSuccessStatusCode)
+        if (response == null || !response.IsSuccessStatusCode)
             return null;
 
         var json = await response.Content.ReadAsStringAsync(ct);
         response.Dispose();
-        return JsonSerializer.Deserialize<KeywordReportResponseDto>(json);
+        var report = JsonSerializer.Deserialize<KeywordReportResponseDto>(json);
+        if (report?.Data?.ReportingDataResponse?.Row == null)
+            return report;
+
+        foreach (var row in report.Data.ReportingDataResponse.Row)
+        {
+            FillRowDisplayFields(row);
+        }
+
+        return report;
+    }
+
+    private static void FillRowDisplayFields(KeywordReportRowDto row)
+    {
+        var m = row.Metadata;
+        var t = row.Total;
+        if (m != null)
+        {
+            row.Status = m.KeywordDisplayStatus;
+            row.Country = m.CountriesOrRegions != null && m.CountriesOrRegions.Count > 0
+                ? string.Join(", ", m.CountriesOrRegions)
+                : null;
+            row.Keyword = m.Keyword;
+            row.MatchType = m.MatchType;
+            row.AdGroupName = m.AdGroupName;
+            row.CampaignId = m.CampaignId;
+            row.KeywordId = m.KeywordId;
+            row.BidAmount = m.BidAmount;
+        }
+        if (t != null)
+        {
+            row.AvgCpt = t.AvgCpt;
+            row.LocalSpend = t.LocalSpend;
+            row.Taps = t.Taps;
+            row.Impressions = t.Impressions;
+            row.Ttr = t.Ttr;
+            row.TapInstalls = t.TapInstalls;
+            row.TapInstallCpi = t.TapInstallCpi;
+            row.TotalAvgCpi = t.TotalAvgCpi;
+            row.TotalInstallRate = t.TotalInstallRate;
+            row.TapInstallRate = t.TapInstallRate;
+            row.AvgCpm = t.AvgCpm;
+            row.TotalInstalls = t.TotalInstalls;
+        }
     }
 }

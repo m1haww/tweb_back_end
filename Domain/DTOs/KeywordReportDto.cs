@@ -71,7 +71,6 @@ public class KeywordReportPaginationDto
     public int Limit { get; set; }
 }
 
-/// <summary>Root keyword report API response: data.reportingDataResponse.row.</summary>
 public class KeywordReportResponseDto
 {
     [JsonPropertyName("data")]
@@ -103,6 +102,69 @@ public class KeywordReportRowDto
 
     [JsonPropertyName("insights")]
     public KeywordReportInsightsDto? Insights { get; set; }
+    
+    [JsonPropertyName("appName")]
+    public string? AppName { get; set; }
+
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("country")]
+    public string? Country { get; set; }
+
+    [JsonPropertyName("keyword")]
+    public string? Keyword { get; set; }
+
+    [JsonPropertyName("matchType")]
+    public string? MatchType { get; set; }
+
+    [JsonPropertyName("adGroupName")]
+    public string? AdGroupName { get; set; }
+
+    [JsonPropertyName("campaignId")]
+    public long? CampaignId { get; set; }
+
+    [JsonPropertyName("keywordId")]
+    public long? KeywordId { get; set; }
+
+    [JsonPropertyName("bidAmount")]
+    public MoneyDto? BidAmount { get; set; }
+
+    [JsonPropertyName("avgCpt")]
+    public MoneyDto? AvgCpt { get; set; }
+
+    [JsonPropertyName("localSpend")]
+    public MoneyDto? LocalSpend { get; set; }
+
+    [JsonPropertyName("taps")]
+    public int? Taps { get; set; }
+
+    [JsonPropertyName("impressions")]
+    public int? Impressions { get; set; }
+
+    [JsonPropertyName("ttr")]
+    public decimal? Ttr { get; set; }
+
+    [JsonPropertyName("tapInstalls")]
+    public int? TapInstalls { get; set; }
+
+    [JsonPropertyName("tapInstallCpi")]
+    public MoneyDto? TapInstallCpi { get; set; }
+
+    [JsonPropertyName("totalAvgCpi")]
+    public MoneyDto? TotalAvgCpi { get; set; }
+
+    [JsonPropertyName("totalInstallRate")]
+    public decimal? TotalInstallRate { get; set; }
+
+    [JsonPropertyName("tapInstallRate")]
+    public decimal? TapInstallRate { get; set; }
+
+    [JsonPropertyName("avgCpm")]
+    public MoneyDto? AvgCpm { get; set; }
+
+    [JsonPropertyName("totalInstalls")]
+    public int? TotalInstalls { get; set; }
 }
 
 public class KeywordReportTotalDto
@@ -217,6 +279,9 @@ public class KeywordReportMetadataDto
 
     [JsonPropertyName("modificationTime")]
     public string? ModificationTime { get; set; }
+
+    [JsonPropertyName("countriesOrRegions")]
+    public List<string>? CountriesOrRegions { get; set; }
 }
 
 public class KeywordReportInsightsDto
