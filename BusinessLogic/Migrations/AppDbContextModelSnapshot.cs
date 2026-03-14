@@ -64,6 +64,9 @@ namespace Groz_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("HasTrial")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("InstallDate")
                         .HasColumnType("timestamp with time zone");
 

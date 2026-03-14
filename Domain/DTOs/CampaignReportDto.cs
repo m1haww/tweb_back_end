@@ -111,6 +111,12 @@ public class CampaignReportRowDto
 
     [JsonPropertyName("arpu")]
     public decimal? Arpu { get; set; }
+
+    [JsonPropertyName("trialsCount")]
+    public int? TrialsCount { get; set; }
+
+    [JsonPropertyName("cac")]
+    public decimal? Cac { get; set; }
 }
 
 public class CampaignReportMetadataDto
@@ -182,7 +188,6 @@ public class CampaignReportAppDto
     public long? AdamId { get; set; }
 }
 
-/// <summary>Metrics total for a campaign report row.</summary>
 public class CampaignReportRowTotalDto
 {
     [JsonPropertyName("localSpend")]
