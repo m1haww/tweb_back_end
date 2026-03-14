@@ -21,6 +21,9 @@ public class ReportsService : IReportsService
     public async Task<CampaignReportResponseDto?> GetCampaignReportAsync(Guid userId, CampaignReportRequestDto request, CancellationToken ct = default)
     {
         var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns", request, ct);
+        Console.WriteLine("Got this response from Apple:");
+        Console.WriteLine($"Response: {await response.Content.ReadAsStringAsync(ct)}");
+        
         if (response == null || !response.IsSuccessStatusCode)
             return null;
 
