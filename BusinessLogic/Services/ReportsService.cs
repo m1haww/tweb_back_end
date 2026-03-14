@@ -24,35 +24,45 @@ public class ReportsService : IReportsService
         if (response == null || !response.IsSuccessStatusCode)
             return null;
 
-        var json = await response.Content.ReadAsStringAsync(ct);
-        response.Dispose();
-        var report = JsonSerializer.Deserialize<CampaignReportResponseDto>(json);
-        if (report?.Data?.ReportingDataResponse?.Row == null)
-            return report;
-
-        if (!TryParseReportDateRange(request.StartTime, request.EndTime, out var startUtc, out var endUtc))
-            return report;
-
-        foreach (var row in report.Data.ReportingDataResponse.Row)
+        try
         {
-            if (request.CampaignId.HasValue && row.Metadata?.CampaignId != request.CampaignId.Value)
-                continue;
+            var json = await response.Content.ReadAsStringAsync(ct);
+            response.Dispose();
+            var report = JsonSerializer.Deserialize<CampaignReportResponseDto>(json);
+            if (report?.Data?.ReportingDataResponse?.Row == null)
+                return report;
 
-            var campaignId = row.Metadata?.CampaignId;
-            if (!campaignId.HasValue)
-                continue;
+            if (!TryParseReportDateRange(request.StartTime, request.EndTime, out var startUtc, out var endUtc))
+                return report;
 
-            var (revenue, userCount) = await GetRevenueAndUserCountForCampaignInRangeAsync(campaignId.Value, startUtc, endUtc, ct);
-            row.Revenue = (decimal)revenue;
-            if (userCount > 0)
-                row.Arpu = (decimal)revenue / userCount;
+            foreach (var row in report.Data.ReportingDataResponse.Row)
+            {
+                if (request.CampaignId.HasValue && row.Metadata?.CampaignId != request.CampaignId.Value)
+                    continue;
 
-            var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
-            if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
-                row.Roas = row.Revenue / localSpendAmount.Value;
+                var campaignId = row.Metadata?.CampaignId;
+                if (!campaignId.HasValue)
+                    continue;
+
+                var (revenue, userCount) =
+                    await GetRevenueAndUserCountForCampaignInRangeAsync(campaignId.Value, startUtc, endUtc, ct);
+                row.Revenue = (decimal)revenue;
+                if (userCount > 0)
+                    row.Arpu = (decimal)revenue / userCount;
+
+                var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
+                if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
+                    row.Roas = row.Revenue / localSpendAmount.Value;
+            }
+
+            return report;
         }
-
-        return report;
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error while fetching campaign report:");
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     private static bool TryParseReportDateRange(string? startTime, string? endTime, out DateTime startUtc, out DateTime endUtc)
