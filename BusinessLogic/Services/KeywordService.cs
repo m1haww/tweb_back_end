@@ -64,7 +64,6 @@ public class KeywordService : IKeywordService
             foreach (var row in report.Data.ReportingDataResponse.Row)
             {
                 if (request.CampaignId.HasValue && row.Metadata?.CampaignId != request.CampaignId.Value) continue;
-                if (request.KeywordId.HasValue && row.Metadata?.KeywordId != request.KeywordId.Value) continue;
                 if (request.AdGroupId.HasValue && row.Metadata?.AdGroupId != request.AdGroupId.Value) continue;
                 
                 var keywordId = row.Metadata?.KeywordId;
