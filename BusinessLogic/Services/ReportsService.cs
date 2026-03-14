@@ -21,8 +21,6 @@ public class ReportsService : IReportsService
     public async Task<CampaignReportResponseDto?> GetCampaignReportAsync(Guid userId, CampaignReportRequestDto request, CancellationToken ct = default)
     {
         var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns", request, ct);
-        Console.WriteLine("Got this response from Apple:");
-        Console.WriteLine($"Response: {await response.Content.ReadAsStringAsync(ct)}");
         
         if (response == null || !response.IsSuccessStatusCode)
             return null;
@@ -31,29 +29,29 @@ public class ReportsService : IReportsService
         {
             var json = await response.Content.ReadAsStringAsync(ct);
             response.Dispose();
-            Console.WriteLine("Response: {0}", json);
             var report = JsonSerializer.Deserialize<CampaignReportResponseDto>(json);
             if (report?.Data?.ReportingDataResponse?.Row == null)
                 return report;
-            Console.Write("Report data response is not null");
             
             if (!TryParseReportDateRange(request.StartTime, request.EndTime, out var startUtc, out var endUtc))
                 return report;
             
-            Console.WriteLine("The date parser went through...");
-
             foreach (var row in report.Data.ReportingDataResponse.Row)
             {
                 var campaignId = row.Metadata?.CampaignId;
                 if (!campaignId.HasValue)
                     continue;
 
-                var (revenue, userCount) =
-                    await GetRevenueAndUserCountForCampaignInRangeAsync(campaignId.Value, startUtc, endUtc, ct);
-                Console.WriteLine($"Revenue: {revenue} ({userCount} users)");
+                var (revenue, userCount) = await GetRevenueAndUserCountForCampaignInRangeAsync(campaignId.Value, startUtc, endUtc, ct);
                 row.Revenue = (decimal)revenue;
                 if (userCount > 0)
+                {
                     row.Arpu = (decimal)revenue / userCount;
+                }
+                else
+                {
+                    row.Arpu = 0;
+                }
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
