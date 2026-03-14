@@ -28,12 +28,16 @@ public class ReportsService : IReportsService
         {
             var json = await response.Content.ReadAsStringAsync(ct);
             response.Dispose();
+            Console.WriteLine("Response: {0}", json);
             var report = JsonSerializer.Deserialize<CampaignReportResponseDto>(json);
             if (report?.Data?.ReportingDataResponse?.Row == null)
                 return report;
-
+            Console.Write("Report data response is not null");
+            
             if (!TryParseReportDateRange(request.StartTime, request.EndTime, out var startUtc, out var endUtc))
                 return report;
+            
+            Console.WriteLine("The date parser went through...");
 
             foreach (var row in report.Data.ReportingDataResponse.Row)
             {
@@ -46,6 +50,7 @@ public class ReportsService : IReportsService
 
                 var (revenue, userCount) =
                     await GetRevenueAndUserCountForCampaignInRangeAsync(campaignId.Value, startUtc, endUtc, ct);
+                Console.WriteLine($"Revenue: {revenue} ({userCount} users)");
                 row.Revenue = (decimal)revenue;
                 if (userCount > 0)
                     row.Arpu = (decimal)revenue / userCount;
