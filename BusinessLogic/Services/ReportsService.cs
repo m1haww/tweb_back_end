@@ -44,9 +44,6 @@ public class ReportsService : IReportsService
 
             foreach (var row in report.Data.ReportingDataResponse.Row)
             {
-                if (request.CampaignId.HasValue && row.Metadata?.CampaignId != request.CampaignId.Value)
-                    continue;
-
                 var campaignId = row.Metadata?.CampaignId;
                 if (!campaignId.HasValue)
                     continue;
