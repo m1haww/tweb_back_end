@@ -27,6 +27,18 @@ public class KeywordReportRequestDto
 
     [JsonPropertyName("selector")]
     public KeywordReportSelectorDto? Selector { get; set; }
+
+    /// <summary>Optional. When set, only rows with this campaignId get Revenue/ROAS/ARPU/TrialsCount/CAC.</summary>
+    [JsonPropertyName("campaignId")]
+    public long? CampaignId { get; set; }
+
+    /// <summary>Optional. When set, only rows with this keywordId get Revenue/ROAS/ARPU/TrialsCount/CAC.</summary>
+    [JsonPropertyName("keywordId")]
+    public long? KeywordId { get; set; }
+
+    /// <summary>Optional. When set, only rows with this adGroupId get Revenue/ROAS/ARPU/TrialsCount/CAC.</summary>
+    [JsonPropertyName("adGroupId")]
+    public long? AdGroupId { get; set; }
 }
 
 public class KeywordReportSelectorDto
@@ -165,6 +177,26 @@ public class KeywordReportRowDto
 
     [JsonPropertyName("totalInstalls")]
     public int? TotalInstalls { get; set; }
+
+    /// <summary>Revenue from AppUsers (install date in request range, campaign/keyword/adGroup match). Set by backend.</summary>
+    [JsonPropertyName("revenue")]
+    public decimal? Revenue { get; set; }
+
+    /// <summary>Return on ad spend: Revenue / LocalSpend. Set by backend.</summary>
+    [JsonPropertyName("roas")]
+    public decimal? Roas { get; set; }
+
+    /// <summary>Average revenue per user. Set by backend.</summary>
+    [JsonPropertyName("arpu")]
+    public decimal? Arpu { get; set; }
+
+    /// <summary>Count of users with HasTrial = true in the selected period and campaign/keyword/adGroup. Set by backend.</summary>
+    [JsonPropertyName("trialsCount")]
+    public int? TrialsCount { get; set; }
+
+    /// <summary>Customer acquisition cost: total spend / count of users with revenue &gt; 0. Set by backend.</summary>
+    [JsonPropertyName("cac")]
+    public decimal? Cac { get; set; }
 }
 
 public class KeywordReportTotalDto

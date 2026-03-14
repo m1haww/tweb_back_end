@@ -1,16 +1,21 @@
+using System.Globalization;
 using System.Text.Json;
+using BusinessLogic.Database;
 using BusinessLogic.Interfaces;
 using Domain.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services;
 
 public class KeywordService : IKeywordService
 {
     private readonly IAppleSearchAdsApiClient _apiClient;
+    private readonly AppDbContext _db;
 
-    public KeywordService(IAppleSearchAdsApiClient apiClient)
+    public KeywordService(IAppleSearchAdsApiClient apiClient, AppDbContext db)
     {
         _apiClient = apiClient;
+        _db = db;
     }
 
     public async Task<IReadOnlyList<KeywordDto>> GetAllAsync(long campaignId, long adGroupId, Guid userId, int? limit = null, int? offset = null, CancellationToken ct = default)
@@ -50,11 +55,76 @@ public class KeywordService : IKeywordService
             return report;
 
         foreach (var row in report.Data.ReportingDataResponse.Row)
-        {
             FillRowDisplayFields(row);
+
+        if (TryParseReportDateRange(request.StartTime, request.EndTime, out var startUtc, out var endUtc))
+        {
+            foreach (var row in report.Data.ReportingDataResponse.Row)
+            {
+                if (request.CampaignId.HasValue && row.Metadata?.CampaignId != request.CampaignId.Value) continue;
+                if (request.KeywordId.HasValue && row.Metadata?.KeywordId != request.KeywordId.Value) continue;
+                if (request.AdGroupId.HasValue && row.Metadata?.AdGroupId != request.AdGroupId.Value) continue;
+                
+                var keywordId = row.Metadata?.KeywordId;
+                var adGroupId = row.Metadata?.AdGroupId;
+                if (!keywordId.HasValue || !adGroupId.HasValue)
+                    continue;
+
+                var (revenue, userCount, trialsCount, payingUserCount) = await GetRevenueAndUserCountsForKeywordInRangeAsync(campaignId, keywordId.Value, adGroupId.Value, startUtc, endUtc, ct);
+                row.Revenue = (decimal)revenue;
+                row.TrialsCount = trialsCount;
+                row.Arpu = userCount > 0 ? (decimal)revenue / userCount : 0;
+
+                var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
+                if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
+                {
+                    row.Roas = row.Revenue / localSpendAmount.Value;
+                    row.Cac = payingUserCount > 0 ? localSpendAmount.Value / payingUserCount : 0;
+                }
+                else
+                {
+                    row.Roas = 0;
+                    row.Cac = 0;
+                }
+            }
         }
 
         return report;
+    }
+
+    private static bool TryParseReportDateRange(string? startTime, string? endTime, out DateTime startUtc, out DateTime endUtc)
+    {
+        startUtc = default;
+        endUtc = default;
+        if (string.IsNullOrWhiteSpace(startTime) || string.IsNullOrWhiteSpace(endTime))
+            return false;
+        if (!DateTime.TryParse(startTime, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out startUtc))
+            return false;
+        if (!DateTime.TryParse(endTime, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out endUtc))
+            return false;
+        startUtc = startUtc.Date;
+        endUtc = endUtc.Date.AddDays(1).AddTicks(-1);
+        return true;
+    }
+
+    private async Task<(double Revenue, int UserCount, int TrialsCount, int PayingUserCount)> GetRevenueAndUserCountsForKeywordInRangeAsync(long campaignId, long keywordId, long adGroupId, DateTime startUtc, DateTime endUtc, CancellationToken ct)
+    {
+        var query = _db.AppUsers
+            .AsNoTracking()
+            .Where(u => u.CampaignId == campaignId && u.KeywordId == keywordId && u.AdGroupId == adGroupId
+                && u.InstallDate >= startUtc && u.InstallDate <= endUtc);
+
+        var revenue = await query.SumAsync(u => u.TotalRevenue, ct);
+        var userCount = await query.CountAsync(ct);
+        var trialsCount = await query.CountAsync(u => u.HasTrial, ct);
+        var payingUserCount = await query.CountAsync(u => u.TotalRevenue > 0, ct);
+        return (revenue, userCount, trialsCount, payingUserCount);
+    }
+
+    private static decimal? ParseAmount(string? amount)
+    {
+        if (string.IsNullOrWhiteSpace(amount)) return null;
+        return decimal.TryParse(amount, NumberStyles.Any, CultureInfo.InvariantCulture, out var v) ? v : null;
     }
 
     private static void FillRowDisplayFields(KeywordReportRowDto row)
