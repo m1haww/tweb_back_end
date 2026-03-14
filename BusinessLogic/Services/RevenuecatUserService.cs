@@ -52,8 +52,8 @@ public class RevenuecatUserService : IRevenuecatUserService
 
         var appUser = new AppUser
         {
-            Id = Guid.NewGuid(),
-            AppId = appUserId,
+            Id = Guid.TryParse(appUserId, out var guid) ? guid : Guid.NewGuid(),
+            AppId = string.Empty,
             CountryCode = countryCode,
             InstallDate = installDate,
             TotalRevenue = 0,
