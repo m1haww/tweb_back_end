@@ -30,6 +30,10 @@ public class CampaignReportRequestDto
 
     [JsonPropertyName("selector")]
     public CampaignReportSelectorDto? Selector { get; set; }
+
+    /// <summary>Optional. When set, only rows with this campaignId are included (and Revenue/ROAS are computed for matching rows).</summary>
+    [JsonPropertyName("campaignId")]
+    public long? CampaignId { get; set; }
 }
 
 public class CampaignReportSelectorDto
@@ -102,6 +106,15 @@ public class CampaignReportRowDto
 
     [JsonPropertyName("total")]
     public CampaignReportRowTotalDto? Total { get; set; }
+
+    [JsonPropertyName("revenue")]
+    public decimal? Revenue { get; set; }
+
+    [JsonPropertyName("roas")]
+    public decimal? Roas { get; set; }
+
+    [JsonPropertyName("arpu")]
+    public decimal? Arpu { get; set; }
 }
 
 public class CampaignReportMetadataDto
