@@ -55,7 +55,13 @@ public class ReportsService : IReportsService
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
+                {
                     row.Roas = row.Revenue / localSpendAmount.Value;
+                }
+                else
+                {
+                    row.Roas = 0;
+                }
             }
 
             return report;
