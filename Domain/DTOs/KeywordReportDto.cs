@@ -27,12 +27,6 @@ public class KeywordReportRequestDto
 
     [JsonPropertyName("selector")]
     public KeywordReportSelectorDto? Selector { get; set; }
-
-    [JsonPropertyName("campaignId")]
-    public long? CampaignId { get; set; }
-    
-    [JsonPropertyName("adGroupId")]
-    public long? AdGroupId { get; set; }
 }
 
 public class KeywordReportSelectorDto
