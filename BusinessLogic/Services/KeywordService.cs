@@ -47,7 +47,7 @@ public class KeywordService : IKeywordService
         var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns/{campaignId}/keywords", request, ct);
         
         Console.WriteLine($"Response from apple: {await response.Content.ReadAsStringAsync(ct)}");
-        if (response == null || !response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
             return null;
 
         var json = await response.Content.ReadAsStringAsync(ct);
@@ -72,6 +72,9 @@ public class KeywordService : IKeywordService
                 row.Revenue = (decimal)revenue;
                 row.TrialsCount = trialsCount;
                 row.Arpu = userCount > 0 ? (decimal)revenue / userCount : 0;
+
+                row.Trial2PaidConversionRate = trialsCount > 0 ? (double)payingUserCount / trialsCount * 100.0 : 0;
+                row.Install2TrialConversionRate = userCount > 0 ? (double)trialsCount / userCount * 100.0 : 0;
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)

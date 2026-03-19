@@ -180,6 +180,14 @@ public class KeywordReportRowDto
 
     [JsonPropertyName("cac")]
     public decimal? Cac { get; set; }
+
+    /// <summary>Trial to paid conversion rate as percentage (paying users / trials * 100).</summary>
+    [JsonPropertyName("trial2PaidConversionRate")]
+    public double? Trial2PaidConversionRate { get; set; }
+
+    /// <summary>Install to trial conversion rate as percentage (trials / installs * 100).</summary>
+    [JsonPropertyName("install2TrialConversionRate")]
+    public double? Install2TrialConversionRate { get; set; }
 }
 
 public class KeywordReportTotalDto
