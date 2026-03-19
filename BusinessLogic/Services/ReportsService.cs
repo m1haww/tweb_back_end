@@ -49,6 +49,7 @@ public class ReportsService : IReportsService
 
                 row.Trial2PaidConversionRate = trialsCount > 0 ? (double)payingUserCount / trialsCount * 100.0 : 0;
                 row.Install2TrialConversionRate = row.Total?.TotalInstalls > 0 ? (double)trialsCount / row.Total.TotalInstalls.Value * 100.0 : 0;
+                row.Install2PaidConversionRate = row.Total?.TotalInstalls > 0 ? (double)payingUserCount / row.Total.TotalInstalls.Value * 100.0 : 0;
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
@@ -62,10 +63,12 @@ public class ReportsService : IReportsService
                     {
                         row.Cac = 0;
                     }
+                    row.CostPerTrial = trialsCount > 0 ? localSpendAmount.Value / trialsCount : 0;
                 }
                 else
                 {
                     row.Roas = 0;
+                    row.CostPerTrial = 0;
                 }
             }
 

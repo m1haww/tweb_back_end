@@ -188,6 +188,14 @@ public class KeywordReportRowDto
     /// <summary>Install to trial conversion rate as percentage (trials / installs * 100).</summary>
     [JsonPropertyName("install2TrialConversionRate")]
     public double? Install2TrialConversionRate { get; set; }
+
+    /// <summary>Install to paid conversion rate as percentage (paying users / installs * 100).</summary>
+    [JsonPropertyName("install2PaidConversionRate")]
+    public double? Install2PaidConversionRate { get; set; }
+
+    /// <summary>Cost per trial (local spend / trials count).</summary>
+    [JsonPropertyName("costPerTrial")]
+    public decimal? CostPerTrial { get; set; }
 }
 
 public class KeywordReportTotalDto

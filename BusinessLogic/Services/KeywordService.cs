@@ -46,7 +46,6 @@ public class KeywordService : IKeywordService
     {
         var response = await _apiClient.PostAsJsonAsync(userId, $"{AppleSearchAdsApiClientService.BaseUrl}/reports/campaigns/{campaignId}/keywords", request, ct);
         
-        Console.WriteLine($"Response from apple: {await response.Content.ReadAsStringAsync(ct)}");
         if (!response.IsSuccessStatusCode)
             return null;
 
@@ -75,17 +74,20 @@ public class KeywordService : IKeywordService
 
                 row.Trial2PaidConversionRate = trialsCount > 0 ? (double)payingUserCount / trialsCount * 100.0 : 0;
                 row.Install2TrialConversionRate = row.TotalInstalls > 0 ? (double)trialsCount / row.TotalInstalls * 100.0 : 0;
+                row.Install2PaidConversionRate = row.TotalInstalls > 0 ? (double)payingUserCount / row.TotalInstalls * 100.0 : 0;
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)
                 {
                     row.Roas = row.Revenue / localSpendAmount.Value;
                     row.Cac = payingUserCount > 0 ? localSpendAmount.Value / payingUserCount : 0;
+                    row.CostPerTrial = trialsCount > 0 ? localSpendAmount.Value / trialsCount : 0;
                 }
                 else
                 {
                     row.Roas = 0;
                     row.Cac = 0;
+                    row.CostPerTrial = 0;
                 }
             }
         }

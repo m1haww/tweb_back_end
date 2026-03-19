@@ -123,6 +123,14 @@ public class CampaignReportRowDto
 
     [JsonPropertyName("install2TrialConversionRate")]
     public double Install2TrialConversionRate { get; set; }
+
+    /// <summary>Install to paid conversion rate: payingUserCount / totalInstalls * 100.</summary>
+    [JsonPropertyName("install2PaidConversionRate")]
+    public double Install2PaidConversionRate { get; set; }
+
+    /// <summary>Cost per trial: localSpend / trialsCount.</summary>
+    [JsonPropertyName("costPerTrial")]
+    public decimal? CostPerTrial { get; set; }
 }
 
 public class CampaignReportMetadataDto
