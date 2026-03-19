@@ -74,7 +74,7 @@ public class KeywordService : IKeywordService
                 row.Arpu = userCount > 0 ? (decimal)revenue / userCount : 0;
 
                 row.Trial2PaidConversionRate = trialsCount > 0 ? (double)payingUserCount / trialsCount * 100.0 : 0;
-                row.Install2TrialConversionRate = userCount > 0 ? (double)trialsCount / userCount * 100.0 : 0;
+                row.Install2TrialConversionRate = row.TotalInstalls > 0 ? (double)trialsCount / row.TotalInstalls * 100.0 : 0;
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)

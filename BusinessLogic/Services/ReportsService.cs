@@ -45,15 +45,10 @@ public class ReportsService : IReportsService
                 var (revenue, userCount, trialsCount, payingUserCount) = await GetRevenueAndUserCountsForCampaignInRangeAsync(campaignId.Value, startUtc, endUtc, ct);
                 row.Revenue = (decimal)revenue;
                 row.TrialsCount = trialsCount;
-                
-                if (userCount > 0)
-                {
-                    row.Arpu = (decimal)revenue / userCount;
-                }
-                else
-                {
-                    row.Arpu = 0;
-                }
+                row.Arpu = row?.Total?.TotalInstalls > 0 ? (decimal)revenue / row.Total.TotalInstalls : 0;
+
+                row.Trial2PaidConversionRate = trialsCount > 0 ? (double)payingUserCount / trialsCount * 100.0 : 0;
+                row.Install2TrialConversionRate = row.Total?.TotalInstalls > 0 ? (double)trialsCount / row.Total.TotalInstalls.Value * 100.0 : 0;
 
                 var localSpendAmount = ParseAmount(row.Total?.LocalSpend?.Amount);
                 if (localSpendAmount.HasValue && localSpendAmount.Value > 0)

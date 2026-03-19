@@ -117,6 +117,12 @@ public class CampaignReportRowDto
 
     [JsonPropertyName("cac")]
     public decimal? Cac { get; set; }
+
+    [JsonPropertyName("trial2PaidConversionRate")]
+    public double Trial2PaidConversionRate { get; set; }
+
+    [JsonPropertyName("install2TrialConversionRate")]
+    public double Install2TrialConversionRate { get; set; }
 }
 
 public class CampaignReportMetadataDto
