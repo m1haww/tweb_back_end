@@ -9,5 +9,4 @@ public interface ICampaignService
     Task<CampaignDto?> CreateAsync(CreateCampaignDto dto, Guid userId, CancellationToken ct = default);
     Task<CampaignDto?> UpdateAsync(long campaignId, UpdateCampaignDto dto, Guid userId, CancellationToken ct = default);
     Task<bool> DeleteAsync(long campaignId, Guid userId, CancellationToken ct = default);
-    Task<CampaignReportResponseDto?> GetCampaignReportAsync(Guid userId, CampaignReportRequestDto request, CancellationToken ct = default);
 }

@@ -85,21 +85,6 @@ public class CampaignService : ICampaignService
         return response.IsSuccessStatusCode;
     }
 
-    public async Task<CampaignReportResponseDto?> GetCampaignReportAsync(Guid userId, CampaignReportRequestDto request, CancellationToken ct = default)
-    {
-        var token = await GetAccessTokenAsync(userId, ct);
-        if (token == null) return null;
-
-        using var client = CreateClient(token!);
-        var response = await client.PostAsJsonAsync($"{BaseUrl}/reports/campaigns", request, ct);
-        var body = await response.Content.ReadAsStringAsync(ct);
-        Console.WriteLine("Response body: " + body);
-        if (!response.IsSuccessStatusCode) return null;
-
-        var json = await response.Content.ReadAsStringAsync(ct);
-        return JsonSerializer.Deserialize<CampaignReportResponseDto>(json);
-    }
-
     private async Task<string?> GetAccessTokenAsync(Guid userId, CancellationToken ct)
     {
         var result = await _credentialService.GetOrCreateAccessToken(userId, ct);

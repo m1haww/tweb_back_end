@@ -50,6 +50,7 @@ builder.Services.AddScoped<ICampaignService, CampaignService>();
 builder.Services.AddScoped<IAdGroupService, AdGroupService>();
 builder.Services.AddScoped<IKeywordService, KeywordService>();
 builder.Services.AddScoped<IRevenuecatUserService, RevenuecatUserService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
 
 var app = builder.Build();
 
