@@ -39,7 +39,7 @@ public class CampaignReportsController : ControllerBase
         return Ok(report);
     }
 
-    [HttpGet("get-all")]
+    [HttpPost("get-all")]
     public async Task<IActionResult> GetCampaignReportList([FromBody] CampaignReportRequestDto request, CancellationToken ct = default)
     {
         var userId = GetCurrentUserId();
