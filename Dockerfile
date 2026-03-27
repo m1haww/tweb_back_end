@@ -2,8 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy solution and project files
-COPY "Groz Backend.sln" .
+# Copy project files (solution not required for restore/publish of Api.csproj)
 COPY global.json .
 COPY Api/Api.csproj Api/
 COPY BusinessLogic/BusinessLogic.csproj BusinessLogic/
