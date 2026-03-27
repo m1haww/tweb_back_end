@@ -19,6 +19,12 @@ public class RevenuecatController : ControllerBase
     public async Task<IActionResult> SetUser([FromBody] AddRevenuecatUserDto user, CancellationToken ct)
     {
         var appUser = await _revenuecatUserService.SetUserAsync(user, ct);
+        
+        if (user?.Event?.Environment != "PRODUCTION")
+        {
+            return BadRequest(new { message = $"This is not a production event." });
+        }
+        
         if (appUser == null)
             return BadRequest(new { message = "Invalid request; app_user_id is required." });
 
