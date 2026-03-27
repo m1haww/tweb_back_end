@@ -1,3 +1,4 @@
+using BusinessLogic.Interfaces;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,20 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class RevenuecatController : ControllerBase
 {
-    [HttpPost("set-user")]
-    public async Task<IActionResult> SetUser([FromBody] AddRevenuecatUserDto user)
+    private readonly IRevenuecatUserService _revenuecatUserService;
+
+    public RevenuecatController(IRevenuecatUserService revenuecatUserService)
     {
-        return Ok("Received data about user.");
+        _revenuecatUserService = revenuecatUserService;
+    }
+
+    [HttpPost("set-user")]
+    public async Task<IActionResult> SetUser([FromBody] AddRevenuecatUserDto user, CancellationToken ct)
+    {
+        var appUser = await _revenuecatUserService.SetUserAsync(user, ct);
+        if (appUser == null)
+            return BadRequest(new { message = "Invalid request; app_user_id is required." });
+
+        return Ok(new { id = appUser.Id, app_user_id = appUser.AppId });
     }
 }

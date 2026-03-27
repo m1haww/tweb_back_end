@@ -21,6 +21,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<App> Apps { get; set; }
     public DbSet<AppStoreConnectCredential> AppStoreConnectCredentials;
     public DbSet<AppleSearchAdsCredential> AppleSearchAdsCredentials { get; set; }
