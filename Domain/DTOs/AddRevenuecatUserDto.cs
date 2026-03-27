@@ -12,6 +12,27 @@ public enum EventType
     Renewal
 }
 
+public class SubscriberAttributes
+{
+    [JsonPropertyName("mediaSource")]
+    public long MediaSource { get; set; }
+    
+    [JsonPropertyName("inst")]
+    public DateTime? ClickDate { get; set; }
+    
+    [JsonPropertyName("orgId")]
+    public long? OrgId { get; set; }
+    
+    [JsonPropertyName("campaignId")]
+    public long? CampaignId { get; set; }
+    
+    [JsonPropertyName("keywordId")]
+    public long? KeywordId { get; set; }
+    
+    [JsonPropertyName("adGroupId")]
+    public long? AdGroupId { get; set; }
+}
+
 public class AddRevenuecatUserDto
 {
     [JsonPropertyName("app_user_id")]
@@ -28,4 +49,7 @@ public class AddRevenuecatUserDto
     
     [JsonPropertyName("commission_percentage")]
     public double? CommissionPercentage { get; set; }
+    
+    [JsonPropertyName("subscriber_attributes")]
+    public SubscriberAttributes? SubscriberAttributes { get; set; } 
 }
